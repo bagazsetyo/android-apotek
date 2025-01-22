@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="55dp"
         android:background="#2196F3"
         android:layout_marginBottom="15dp"
         >
@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
         android:padding="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="65dp"
         >
 
         <LinearLayout

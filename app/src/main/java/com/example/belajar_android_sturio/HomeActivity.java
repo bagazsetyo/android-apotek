@@ -3,6 +3,9 @@ package com.example.belajar_android_sturio;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,6 +58,23 @@ public class HomeActivity extends AppCompatActivity {
 
         // Setup swipe to delete
         ItemTouchHelper.SimpleCallback swipeToDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+//                int position = viewHolder.getAdapterPosition();
+//                // Hapus dari database
+//                Obat obat = listObat.get(position);
+//                databaseHelper.deleteProduct(obat.getId());
+//                // Hapus dari list
+//                listObat.remove(position);
+//                adapter.notifyItemRemoved(position);
+//
+//                showDeleteConfirmationDialog(obat, position);
+//            }
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -63,19 +83,43 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                // Hapus dari database
                 Obat obat = listObat.get(position);
-                databaseHelper.deleteProduct(obat.getId());
-                // Hapus dari list
-                listObat.remove(position);
-                adapter.notifyItemRemoved(position);
+
+                showDeleteConfirmationDialog(obat, position);
             }
         };
 
         new ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(rvObat);
 
+
         // Load data awal
         loadObatData();
+    }
+
+    private void showDeleteConfirmationDialog(Obat obat, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Konfirmasi Hapus");
+        builder.setMessage("Apakah Anda yakin ingin menghapus data ini?");
+
+        // Tombol "Ya" untuk menghapus
+        builder.setPositiveButton("Ya", (dialog, which) -> {
+            // Hapus data dari database
+            databaseHelper.deleteProduct(obat.getId());
+            // Hapus dari list dan perbarui adapter
+            listObat.remove(position);
+            adapter.notifyItemRemoved(position);
+            Toast.makeText(this, "Data berhasil dihapus", Toast.LENGTH_SHORT).show();
+        });
+
+        // Tombol "Tidak" untuk membatalkan
+        builder.setNegativeButton("Tidak", (dialog, which) -> {
+            // Batalkan swipe dan kembalikan posisi item
+            adapter.notifyItemChanged(position);
+        });
+
+        // Tampilkan dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void loadObatData() {

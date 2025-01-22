@@ -7,7 +7,7 @@
 <!--    nav-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="55dp"
         android:background="#2196F3"
         android:layout_marginBottom="15dp"
         >
@@ -111,7 +111,10 @@
             android:id="@+id/btn_pay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bayar" />
+            android:text="Bayar"
+            android:textColor="@color/white"
+            android:background="@color/blue"
+            />
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
