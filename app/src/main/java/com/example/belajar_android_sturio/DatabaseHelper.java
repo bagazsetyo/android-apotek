@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.mindrot.jbcrypt.BCrypt;
+//import org.mindrot.jbcrypt.BCrypt;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "product.db";
@@ -24,6 +27,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PRODUCT_ID = "product_id";
     private static final String COLUMN_CHECKOUT_DATE = "checkout_date";
     private static final String COLUMN_CHECKOUT_QTY = "quantity";
+
+//    user
+    private static final String TABLE_USER = "user";
+    private static final String COLUMN_USER_ID = "id";
+    private static final String COLUMN_USER_NAME = "name";
+    private static final String COLUMN_USER_EMAIL = "email";
+    private static final String COLUMN_USER_PASSWORD = "password";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,14 +55,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COLUMN_PRODUCT_ID + ") REFERENCES " +
                 TABLE_NAME + "(" + COLUMN_ID + "))";
 
+        String createUserTable = "CREATE TABLE " + TABLE_USER + "(" + COLUMN_USER_ID+
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER_NAME + " TEXT, "
+                + COLUMN_USER_EMAIL + " TEXT UNIQUE, " + COLUMN_USER_PASSWORD + " TEXT)";
+
+
+//        // add user1
+        String plainPassUser1 = "bagas123";
+        String passwordUser1 = BCrypt.hashpw(plainPassUser1, BCrypt.gensalt(10));
+        String addUser1 = "INSERT INTO USER (name , email, password) VALUES (?, ?, ?)";
+//
+//        // add user2
+        String plainPassUser2 = "rifqi321";
+        String passwordUser2 = BCrypt.hashpw(plainPassUser2, BCrypt.gensalt(10));
+        String addUser2 = "INSERT INTO USER (name, email, password) VALUES (?, ?, ?)";
+
         db.execSQL(createTable);
         db.execSQL(createCheckoutTable);
+        db.execSQL(createUserTable);
+        db.execSQL(addUser1, new Object[]{"Bagas Setyo N", "bagas123@gmail.com", passwordUser1});
+        db.execSQL(addUser2, new Object[]{"Muhamad Rifqi", "rifqi321@gmail.com", passwordUser2});
     }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKOUT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
     }
 
@@ -118,5 +149,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CHECKOUT, null, null);
         db.close();
+    }
+
+//    user
+    public boolean checkUser(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean isMatch = false;
+
+        Cursor cursor = db.rawQuery("SELECT password FROM USER WHERE email = ?", new String[]{email});
+
+        // cek
+        if (cursor != null && cursor.moveToFirst()) {
+            String storedHash = cursor.getString(0);
+            isMatch = BCrypt.checkpw(password, storedHash);
+        } else {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return isMatch;
     }
 }
