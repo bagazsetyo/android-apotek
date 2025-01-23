@@ -1,5 +1,6 @@
 package com.example.belajar_android_sturio;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,40 @@ public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder
         return new ObatViewHolder(view);
     }
 
-    @Override
     public void onBindViewHolder(@NonNull ObatViewHolder holder, int position) {
         Obat obat = listObat.get(position);
         holder.tvNamaObat.setText(obat.getNama());
-        holder.tvHargaObat.setText("Rp " + obat.getHarga());
+        holder.tvHargaObat.setText("Rp. " + obat.getHarga());
+        holder.tvStokObat.setText(obat.getStok() + " stok");
 
-        holder.btnCheckout.setOnClickListener(v -> {
-            databaseHelper.addToCheckout(obat.getId(), 1);
-            Toast.makeText(context, "Berhasil menambahkan " + obat.getNama() + " ke checkout",
-                    Toast.LENGTH_SHORT).show();
+        holder.btnCheckout.setOnClickListener(new View.OnClickListener() {
+            private Handler handler = new Handler();
+            private Runnable runnable;
+
+            @Override
+            public void onClick(View v) {
+                if (obat.getStok() > 0) {
+                    databaseHelper.addToCheckout(obat.getId(), 1);
+                    obat.setStok(obat.getStok() - 1);
+                    holder.tvStokObat.setText(obat.getStok() + " stok");
+
+                    if (runnable != null) {
+                        handler.removeCallbacks(runnable);
+                    }
+
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Berhasil menambahkan " + obat.getNama() + " ke checkout",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    };
+
+                    handler.postDelayed(runnable, 500); // Menunda eksekusi toast selama 500ms
+                } else {
+                    Toast.makeText(context, "Stok " + obat.getNama() + " habis", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
@@ -48,13 +73,14 @@ public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder
     }
 
     public static class ObatViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNamaObat, tvHargaObat;
+        TextView tvNamaObat, tvHargaObat, tvStokObat;
         ImageButton btnCheckout;
 
         public ObatViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNamaObat = itemView.findViewById(R.id.tv_nama_obat);
             tvHargaObat = itemView.findViewById(R.id.tv_harga_obat);
+            tvStokObat = itemView.findViewById(R.id.tv_stok_obat);
             btnCheckout = itemView.findViewById(R.id.btn_checkout);
         }
     }

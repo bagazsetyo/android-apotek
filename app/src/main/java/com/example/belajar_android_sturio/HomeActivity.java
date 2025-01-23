@@ -91,7 +91,6 @@ public class HomeActivity extends AppCompatActivity {
 
         new ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(rvObat);
 
-
         // Load data awal
         loadObatData();
     }
@@ -132,12 +131,14 @@ public class HomeActivity extends AppCompatActivity {
                     int idIndex = cursor.getColumnIndexOrThrow("id");
                     int nameIndex = cursor.getColumnIndexOrThrow("name");
                     int priceIndex = cursor.getColumnIndexOrThrow("price");
+                    int stokIndex = cursor.getColumnIndexOrThrow("qty");
 
                     long id = cursor.getLong(idIndex);
                     String nama = cursor.getString(nameIndex);
                     double harga = cursor.getDouble(priceIndex);
+                    int stok = cursor.getInt(stokIndex);
 
-                    listObat.add(new Obat(id, nama, harga));
+                    listObat.add(new Obat(id, nama, harga, stok));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

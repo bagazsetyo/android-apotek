@@ -140,6 +140,15 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
 
                 // Proses pembayaran
+                for (CheckoutItem checkoutItem : checkoutItems) {
+                    String name = checkoutItem.getName();
+                    int currentStock = databaseHelper.getCurrentStock(name);
+                    int checkoutQty = checkoutItem.getQuantity();
+                    int newStock = currentStock - checkoutQty;
+
+                    databaseHelper.updateStock(name, newStock);
+                }
+
                 databaseHelper.clearCheckout();
                 Toast.makeText(this, "Pembayaran berhasil", Toast.LENGTH_SHORT).show();
 

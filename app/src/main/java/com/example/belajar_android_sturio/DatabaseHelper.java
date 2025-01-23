@@ -5,8 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
 //import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -151,7 +154,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-//    user
+    public int getCurrentStock(String productName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME,
+                new String[]{"qty"}, // Ganti "stock" jadi "qty"
+                "name = ?",
+                new String[]{productName},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int currentStock = cursor.getInt(cursor.getColumnIndexOrThrow("qty")); // Ganti "stock" jadi "qty"
+            cursor.close();
+            return currentStock;
+        }
+        return 0;
+    }
+
+    public void updateStock(String productName, int newStock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("qty", newStock);
+
+        db.update(TABLE_NAME, values, "name = ?", new String[]{productName});
+        db.close(); // Tambahkan close database
+    }
+
+
+    //    user
     public boolean checkUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean isMatch = false;
