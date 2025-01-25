@@ -45,7 +45,6 @@ public class AddActivity extends AppCompatActivity {
 
         inputName = findViewById(R.id.input_name);
         inputPrice = findViewById(R.id.input_price);
-        inputQty = findViewById(R.id.input_qty);
         btnSave = findViewById(R.id.btn_save);
 
         databaseHelper = new DatabaseHelper(this);

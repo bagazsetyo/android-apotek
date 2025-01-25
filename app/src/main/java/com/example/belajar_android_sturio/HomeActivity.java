@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private RecyclerView rvObat;
-    private ObatAdapter adapter;
-    private ArrayList<Obat> listObat;
+    private RecyclerView rvBuku;
+    private BukuAdapter adapter;
+    private ArrayList<Buku> listBuku;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -29,11 +29,11 @@ public class HomeActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
 
         // Inisialisasi RecyclerView dan ArrayList
-        rvObat = findViewById(R.id.rv_obat);
-        listObat = new ArrayList<>();
-        adapter = new ObatAdapter(this, listObat);
-        rvObat.setLayoutManager(new LinearLayoutManager(this));
-        rvObat.setAdapter(adapter);
+        rvBuku = findViewById(R.id.rv_obat);
+        listBuku = new ArrayList<>();
+        adapter = new BukuAdapter(this, listBuku);
+        rvBuku.setLayoutManager(new LinearLayoutManager(this));
+        rvBuku.setAdapter(adapter);
 
         // Setup bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -83,19 +83,19 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Obat obat = listObat.get(position);
+                Buku buku = listBuku.get(position);
 
-                showDeleteConfirmationDialog(obat, position);
+                showDeleteConfirmationDialog(buku, position);
             }
         };
 
-        new ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(rvObat);
+        new ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(rvBuku);
 
         // Load data awal
         loadObatData();
     }
 
-    private void showDeleteConfirmationDialog(Obat obat, int position) {
+    private void showDeleteConfirmationDialog(Buku obat, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Konfirmasi Hapus");
         builder.setMessage("Apakah Anda yakin ingin menghapus data ini?");
@@ -105,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
             // Hapus data dari database
             databaseHelper.deleteProduct(obat.getId());
             // Hapus dari list dan perbarui adapter
-            listObat.remove(position);
+            listBuku.remove(position);
             adapter.notifyItemRemoved(position);
             Toast.makeText(this, "Data berhasil dihapus", Toast.LENGTH_SHORT).show();
         });
@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadObatData() {
-        listObat.clear();
+        listBuku.clear();
         Cursor cursor = databaseHelper.getAllProducts();
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
                     double harga = cursor.getDouble(priceIndex);
                     int stok = cursor.getInt(stokIndex);
 
-                    listObat.add(new Obat(id, nama, harga, stok));
+                    listBuku.add(new Buku(id, nama, harga, stok));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

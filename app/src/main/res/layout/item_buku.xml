@@ -20,19 +20,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_nama_obat"
+                android:id="@+id/tv_judul_buku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Obat"
+                android:text="Judul Buku"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_harga_obat"
+                android:id="@+id/tv_stok_buku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Rp 0"
+                android:text="Stok: 1"
                 android:textSize="16sp" />
 <!--            <TextView-->
 <!--                android:id="@+id/tv_stok_obat"-->
@@ -44,15 +44,6 @@
 <!--                android:layout_weight="1"-->
 <!--                />-->
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_stok_obat"
-            android:layout_width="wrap_content"
-            android:layout_height="49dp"
-            android:text="0 stok"
-            android:padding="7dp"
-            android:textAlignment="center"
-            />
 
         <ImageButton
             android:id="@+id/btn_checkout"

@@ -12,29 +12,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder> {
+public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.ObatViewHolder> {
     private Context context;
-    private ArrayList<Obat> listObat;
+    private ArrayList<Buku> listBuku;
     private DatabaseHelper databaseHelper;
 
-    public ObatAdapter(Context context, ArrayList<Obat> listObat) {
+    public BukuAdapter(Context context, ArrayList<Buku> listBuku) {
         this.context = context;
-        this.listObat = listObat;
+        this.listBuku = listBuku;
         this.databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
     @Override
     public ObatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_obat, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_buku, parent, false);
         return new ObatViewHolder(view);
     }
 
     public void onBindViewHolder(@NonNull ObatViewHolder holder, int position) {
-        Obat obat = listObat.get(position);
-        holder.tvNamaObat.setText(obat.getNama());
-        holder.tvHargaObat.setText("Rp. " + obat.getHarga());
-        holder.tvStokObat.setText(obat.getStok() + " stok");
+        Buku buku = listBuku.get(position);
+        holder.tvJudulBuku.setText(buku.getNama());
+        holder.tvStokBuku.setText(buku.getStok() + " stok");
 
         holder.btnCheckout.setOnClickListener(new View.OnClickListener() {
             private Handler handler = new Handler();
@@ -42,10 +41,10 @@ public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder
 
             @Override
             public void onClick(View v) {
-                if (obat.getStok() > 0) {
-                    databaseHelper.addToCheckout(obat.getId(), 1);
-                    obat.setStok(obat.getStok() - 1);
-                    holder.tvStokObat.setText(obat.getStok() + " stok");
+                if (buku.getStok() > 0) {
+                    databaseHelper.addToCheckout(buku.getId(), 1);
+                    buku.setStok(buku.getStok() - 1);
+                    holder.tvStokBuku.setText(buku.getStok() + " stok");
 
                     if (runnable != null) {
                         handler.removeCallbacks(runnable);
@@ -54,14 +53,14 @@ public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder
                     runnable = new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "Berhasil menambahkan " + obat.getNama() + " ke checkout",
+                            Toast.makeText(context, "Berhasil menambahkan " + buku.getNama() + " ke checkout",
                                     Toast.LENGTH_SHORT).show();
                         }
                     };
 
                     handler.postDelayed(runnable, 500); // Menunda eksekusi toast selama 500ms
                 } else {
-                    Toast.makeText(context, "Stok " + obat.getNama() + " habis", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Stok " + buku.getNama() + " habis", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -69,18 +68,17 @@ public class ObatAdapter extends RecyclerView.Adapter<ObatAdapter.ObatViewHolder
 
     @Override
     public int getItemCount() {
-        return listObat.size();
+        return listBuku.size();
     }
 
     public static class ObatViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNamaObat, tvHargaObat, tvStokObat;
+        TextView tvJudulBuku, tvStokBuku;
         ImageButton btnCheckout;
 
         public ObatViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNamaObat = itemView.findViewById(R.id.tv_nama_obat);
-            tvHargaObat = itemView.findViewById(R.id.tv_harga_obat);
-            tvStokObat = itemView.findViewById(R.id.tv_stok_obat);
+            tvJudulBuku = itemView.findViewById(R.id.tv_judul_buku);
+            tvStokBuku = itemView.findViewById(R.id.tv_stok_buku);
             btnCheckout = itemView.findViewById(R.id.btn_checkout);
         }
     }

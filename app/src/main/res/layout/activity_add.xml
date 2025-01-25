@@ -14,23 +14,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tambah/Update Data Obat"
+            android:text="Tambah/Update Data Buku"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- Container untuk konten di atas Bottom Navigation -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
-        android:padding="16dp"
         android:layout_marginTop="65dp"
-        >
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,57 +49,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Enter Name"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/input_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Name"
-                        android:inputType="text" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- CardView untuk input Price -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Enter Price"
+                        android:text="Judul"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/input_price"
+                        android:id="@+id/input_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Price"
-                        android:inputType="numberDecimal" />
+                        android:hint="Masukan Judul Buku"
+                        android:inputType="text" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- CardView untuk input Quantity -->
+            <!-- CardView untuk input Price -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,17 +85,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Enter Quantity"
+                        android:text="Stok"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/input_qty"
+                        android:id="@+id/input_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Quantity"
-                        android:inputType="number" />
+                        android:hint="Masukan Stok"
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- CardView untuk input Quantity -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp" />
 
             <!-- Button untuk Save -->
             <Button
@@ -136,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/blue"
-                android:text="Save"
+                android:text="Simpan"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
