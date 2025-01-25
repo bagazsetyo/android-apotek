@@ -110,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "SELECT " + COLUMN_CHECKOUT_QTY + " FROM " + TABLE_CHECKOUT + " WHERE " + COLUMN_PRODUCT_ID + " = ?",
                 new String[]{String.valueOf(productId)}
         );
-
+//        debug here, check if the data insert to database or not
         if (cursor != null && cursor.moveToFirst()) {
             int existingQty = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CHECKOUT_QTY));
             ContentValues values = new ContentValues();
@@ -139,9 +139,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getCheckoutItems() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
-                "SELECT c.id, p.name, p.price, c.quantity " +
+                "SELECT c.id, p.name, c.quantity " +
                         "FROM " + TABLE_CHECKOUT + " c " +
-                        "JOIN " + TABLE_NAME + " p ON c.product_id = p.id",
+                        "JOIN " + TABLE_NAME + " p ON c.buku_id = p.id",
                 null
         );
     }

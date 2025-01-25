@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckoutActivity extends AppCompatActivity {
+public class PinjamActivity extends AppCompatActivity {
     private RecyclerView rvCheckoutItems;
     private TextView tvTotalPrice, tvChangeAmount;
     private EditText etPaymentAmount;
@@ -59,8 +59,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         rvCheckoutItems = findViewById(R.id.rv_checkout_items);
-        tvTotalPrice = findViewById(R.id.tv_total_price);
-        tvChangeAmount = findViewById(R.id.tv_change_amount);
         etPaymentAmount = findViewById(R.id.et_payment_amount);
         btnPay = findViewById(R.id.btn_pay);
 
@@ -71,31 +69,8 @@ public class CheckoutActivity extends AppCompatActivity {
         rvCheckoutItems.setLayoutManager(new LinearLayoutManager(this));
         rvCheckoutItems.setAdapter(adapter);
 
-        loadCheckoutItems();
         setupPaymentCalculation();
         setupPayButton();
-    }
-
-    private void loadCheckoutItems() {
-        Cursor cursor = databaseHelper.getCheckoutItems();
-        checkoutItems.clear();
-        totalPrice = 0;
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                long id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
-                int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
-
-                checkoutItems.add(new CheckoutItem(id, name, price, quantity));
-                totalPrice += (price * quantity);
-            } while (cursor.moveToNext());
-            cursor.close();
-        }
-
-        adapter.notifyDataSetChanged();
-        tvTotalPrice.setText(String.format("Rp %,d", (int)totalPrice));
     }
 
     private void setupPaymentCalculation() {
@@ -108,36 +83,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                calculateChange();
             }
         });
-    }
-
-    private void calculateChange() {
-        try {
-            double paymentAmount = Double.parseDouble(etPaymentAmount.getText().toString());
-            double change = paymentAmount - totalPrice;
-            tvChangeAmount.setText(String.format("Rp %,d", (int)change));
-            btnPay.setEnabled(change >= 0);
-        } catch (NumberFormatException e) {
-            tvChangeAmount.setText("Rp 0");
-            btnPay.setEnabled(false);
-        }
     }
 
     private void setupPayButton() {
         btnPay.setOnClickListener(v -> {
             if (checkoutItems.isEmpty()) {
-                Toast.makeText(this, "Tidak ada item untuk dibayar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tidak ada item untuk dipinjam", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             try {
-                double paymentAmount = Double.parseDouble(etPaymentAmount.getText().toString());
-                if (paymentAmount < totalPrice) {
-                    Toast.makeText(this, "Pembayaran kurang", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 // Proses pembayaran
                 for (CheckoutItem checkoutItem : checkoutItems) {
@@ -150,14 +107,13 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
 
                 databaseHelper.clearCheckout();
-                Toast.makeText(this, "Pembayaran berhasil", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Peminjaman berhasil", Toast.LENGTH_SHORT).show();
 
                 // Perbarui daftar item dan reset input
-                loadCheckoutItems();
                 etPaymentAmount.setText("");
-                tvChangeAmount.setText("Rp 0");
+                tvChangeAmount.setText("");
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Masukkan jumlah pembayaran", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Masukkan Buku", Toast.LENGTH_SHORT).show();
             }
         });
     }

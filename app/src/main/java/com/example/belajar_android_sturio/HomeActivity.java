@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.menu_checkout: // Menambahkan case untuk menu checkout
-                    startActivity(new Intent(getApplicationContext(), CheckoutActivity.class));
+                    startActivity(new Intent(getApplicationContext(), PinjamActivity.class));
                     overridePendingTransition(0,0);
                     finish();
                     return true;

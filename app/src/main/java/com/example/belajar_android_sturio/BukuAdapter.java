@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.ObatViewHolder> {
+public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.BukuVieHolder> {
     private Context context;
     private ArrayList<Buku> listBuku;
     private DatabaseHelper databaseHelper;
@@ -25,12 +25,12 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.ObatViewHolder
 
     @NonNull
     @Override
-    public ObatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BukuVieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_buku, parent, false);
-        return new ObatViewHolder(view);
+        return new BukuVieHolder(view);
     }
 
-    public void onBindViewHolder(@NonNull ObatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BukuVieHolder holder, int position) {
         Buku buku = listBuku.get(position);
         holder.tvJudulBuku.setText(buku.getNama());
         holder.tvStokBuku.setText(buku.getStok() + " stok");
@@ -71,11 +71,11 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.ObatViewHolder
         return listBuku.size();
     }
 
-    public static class ObatViewHolder extends RecyclerView.ViewHolder {
+    public static class BukuVieHolder extends RecyclerView.ViewHolder {
         TextView tvJudulBuku, tvStokBuku;
         ImageButton btnCheckout;
 
-        public ObatViewHolder(@NonNull View itemView) {
+        public BukuVieHolder(@NonNull View itemView) {
             super(itemView);
             tvJudulBuku = itemView.findViewById(R.id.tv_judul_buku);
             tvStokBuku = itemView.findViewById(R.id.tv_stok_buku);

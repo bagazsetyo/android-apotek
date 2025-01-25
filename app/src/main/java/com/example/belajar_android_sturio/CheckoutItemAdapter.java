@@ -31,7 +31,6 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CheckoutItem item = items.get(position);
         holder.tvName.setText(item.getName());
-        holder.tvPrice.setText(String.format("Rp %,d x%d", (int)item.getPrice(), item.getQuantity()));
     }
 
     @Override
@@ -40,12 +39,11 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvPrice;
+        TextView tvName;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_item_name);
-            tvPrice = itemView.findViewById(R.id.tv_item_price);
         }
     }
 }

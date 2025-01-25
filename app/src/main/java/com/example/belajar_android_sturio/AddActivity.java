@@ -35,7 +35,7 @@ public class AddActivity extends AppCompatActivity {
                 case R.id.menu_add:
                     return true;
                 case R.id.menu_checkout:
-                    startActivity(new Intent(getApplicationContext(), CheckoutActivity.class));
+                    startActivity(new Intent(getApplicationContext(), PinjamActivity.class));
                     overridePendingTransition(0,0);
                     finish();
                     return true;
