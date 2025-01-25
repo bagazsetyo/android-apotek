@@ -130,15 +130,13 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     int idIndex = cursor.getColumnIndexOrThrow("id");
                     int nameIndex = cursor.getColumnIndexOrThrow("name");
-                    int priceIndex = cursor.getColumnIndexOrThrow("price");
                     int stokIndex = cursor.getColumnIndexOrThrow("qty");
 
                     long id = cursor.getLong(idIndex);
                     String nama = cursor.getString(nameIndex);
-                    double harga = cursor.getDouble(priceIndex);
                     int stok = cursor.getInt(stokIndex);
 
-                    listBuku.add(new Buku(id, nama, harga, stok));
+                    listBuku.add(new Buku(id, nama, stok));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

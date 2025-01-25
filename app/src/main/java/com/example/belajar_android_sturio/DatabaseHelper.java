@@ -15,19 +15,18 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "product.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
-//    obat
-    private static final String TABLE_NAME = "products";
+//    buku
+    private static final String TABLE_NAME = "buku";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_PRICE = "price";
     private static final String COLUMN_QTY = "qty";
 
 //    checkout
     private static final String TABLE_CHECKOUT = "checkouts";
     private static final String COLUMN_CHECKOUT_ID = "id";
-    private static final String COLUMN_PRODUCT_ID = "product_id";
+    private static final String COLUMN_PRODUCT_ID = "buku_id";
     private static final String COLUMN_CHECKOUT_DATE = "checkout_date";
     private static final String COLUMN_CHECKOUT_QTY = "quantity";
 
@@ -47,7 +46,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT UNIQUE, " +
-                COLUMN_PRICE + " REAL, " +
                 COLUMN_QTY + " INTEGER)";
 
         String createCheckoutTable = "CREATE TABLE " + TABLE_CHECKOUT + " (" +
@@ -90,15 +88,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void saveOrUpdateProduct(String name, double price, int qty) {
+    public void saveOrUpdateProduct(String name, int qty) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
-        values.put(COLUMN_PRICE, price);
         values.put(COLUMN_QTY, qty);
-
         long id = db.replace(TABLE_NAME, null, values);
         db.close();
+        System.out.println(id);
+        System.out.println("save");
     }
 
     public Cursor getAllProducts() {

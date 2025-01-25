@@ -89,7 +89,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/input_price"
+                        android:id="@+id/input_stok"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Masukan Stok"

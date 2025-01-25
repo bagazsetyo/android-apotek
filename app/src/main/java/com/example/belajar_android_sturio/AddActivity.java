@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class AddActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private EditText inputName, inputPrice, inputQty;
+    private EditText inputName, inputStock;
     private Button btnSave;
     private DatabaseHelper databaseHelper;
 
@@ -44,7 +44,7 @@ public class AddActivity extends AppCompatActivity {
         });
 
         inputName = findViewById(R.id.input_name);
-        inputPrice = findViewById(R.id.input_price);
+        inputStock = findViewById(R.id.input_stok);
         btnSave = findViewById(R.id.btn_save);
 
         databaseHelper = new DatabaseHelper(this);
@@ -53,24 +53,22 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = inputName.getText().toString().trim();
-                String priceStr = inputPrice.getText().toString().trim();
-                String qtyStr = inputQty.getText().toString().trim();
+                String qtyStr = inputStock.getText().toString().trim();
 
-                if (name.isEmpty() || priceStr.isEmpty() || qtyStr.isEmpty()) {
-                    Toast.makeText(AddActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                if (name.isEmpty() || qtyStr.isEmpty()) {
+                    Toast.makeText(AddActivity.this, "Mohon isi semua field!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                double price = Double.parseDouble(priceStr);
                 int qty = Integer.parseInt(qtyStr);
 
-                databaseHelper.saveOrUpdateProduct(name, price, qty);
-                Toast.makeText(AddActivity.this, "Product saved", Toast.LENGTH_SHORT).show();
+                databaseHelper.saveOrUpdateProduct(name, qty);
+
+                Toast.makeText(AddActivity.this, "Buku Tersimpan", Toast.LENGTH_SHORT).show();
 
                 // Clear input fields
                 inputName.setText("");
-                inputPrice.setText("");
-                inputQty.setText("");
+                inputStock.setText("");
             }
         });
     }
